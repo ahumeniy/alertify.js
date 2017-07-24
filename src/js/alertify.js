@@ -5,7 +5,7 @@
     var TRANSITION_FALLBACK_DURATION = 500;
     var hideElement = function(el) {
 
-        if (! el) {
+        if (!el) {
             return;
         }
 
@@ -48,6 +48,8 @@
             defaultDelay: 5000,
             logContainerClass: "alertify-logs",
             logContainerDefaultClass: "alertify-logs",
+            invertButtons: false,
+            dialogClass: "",
             dialogs: {
                 buttons: {
                     holder: "<nav>{{buttons}}</nav>",
@@ -80,10 +82,17 @@
             build: function(item) {
 
                 var btnTxt = this.dialogs.buttons.ok;
-                var html = "<div class='dialog'>" + "<div>" + this.dialogs.message.replace("{{message}}", item.message);
 
-                if(item.type === "confirm" || item.type === "prompt") {
-                    btnTxt = this.dialogs.buttons.cancel + this.dialogs.buttons.ok;
+                var cssClass = "dialog";
+                if (this.dialogClass != "") cssClass = cssClass + " " + this.dialogClass;
+
+                var html = "<div class='" + cssClass + "'>" + "<div>" + this.dialogs.message.replace("{{message}}", item.message);
+
+                if (item.type === "confirm" || item.type === "prompt") {
+                    if (!this.invertButtons)
+                        btnTxt = this.dialogs.buttons.cancel + this.dialogs.buttons.ok;
+                    else
+                        btnTxt = this.dialogs.buttons.ok + this.dialogs.buttons.cancel;
                 }
 
                 if (item.type === "prompt") {
@@ -91,16 +100,26 @@
                 }
 
                 html = (html + this.dialogs.buttons.holder + "</div>" + "</div>")
-                  .replace("{{buttons}}", btnTxt)
-                  .replace("{{ok}}", this.okLabel)
-                  .replace("{{cancel}}", this.cancelLabel);
+                    .replace("{{buttons}}", btnTxt)
+                    .replace("{{ok}}", this.okLabel)
+                    .replace("{{cancel}}", this.cancelLabel);
 
                 return html;
 
             },
 
+            setInvertButtons: function(val) {
+                this.invertButtons = val;
+                return this;
+            },
+
+            setDialogClass: function(val) {
+                this.dialogClass = val;
+                return this;
+            },
+
             setCloseLogOnClick: function(bool) {
-                this.closeLogOnClick = !! bool;
+                this.closeLogOnClick = !!bool;
             },
 
             /**
@@ -123,7 +142,7 @@
 
                 if (wait < 0) {
                     hideElement(elem);
-                } else if(wait > 0) {
+                } else if (wait > 0) {
                     setTimeout(function() {
                         hideElement(elem);
                     }, wait);
@@ -182,7 +201,7 @@
 
                 var elLog = document.querySelector(".alertify-logs");
                 var className = this.logContainerClass;
-                if (! elLog) {
+                if (!elLog) {
                     elLog = document.createElement("div");
                     elLog.className = className;
                     this.parent.appendChild(elLog);
@@ -268,7 +287,7 @@
                 function setupHandlers(resolve) {
                     if ("function" !== typeof resolve) {
                         // promises are not available so resolve is a no-op
-                        resolve = function () {};
+                        resolve = function() {};
                     }
 
                     if (btnOK) {
@@ -333,7 +352,7 @@
                 this.parent.appendChild(el);
                 setTimeout(function() {
                     el.classList.remove("hide");
-                    if(input && item.type && item.type === "prompt") {
+                    if (input && item.type && item.type === "prompt") {
                         input.select();
                         input.focus();
                     } else {
@@ -367,33 +386,33 @@
             },
 
             theme: function(themeStr) {
-                switch(themeStr.toLowerCase()) {
-                case "bootstrap":
-                    this.dialogs.buttons.ok = "<button class='ok btn btn-primary' tabindex='1'>{{ok}}</button>";
-                    this.dialogs.buttons.cancel = "<button class='cancel btn btn-default' tabindex='2'>{{cancel}}</button>";
-                    this.dialogs.input = "<input type='text' class='form-control'>";
-                    break;
-                case "purecss":
-                    this.dialogs.buttons.ok = "<button class='ok pure-button' tabindex='1'>{{ok}}</button>";
-                    this.dialogs.buttons.cancel = "<button class='cancel pure-button' tabindex='2'>{{cancel}}</button>";
-                    break;
-                case "mdl":
-                case "material-design-light":
-                    this.dialogs.buttons.ok = "<button class='ok mdl-button mdl-js-button mdl-js-ripple-effect'  tabindex='1'>{{ok}}</button>";
-                    this.dialogs.buttons.cancel = "<button class='cancel mdl-button mdl-js-button mdl-js-ripple-effect' tabindex='2'>{{cancel}}</button>";
-                    this.dialogs.input = "<div class='mdl-textfield mdl-js-textfield'><input class='mdl-textfield__input'><label class='md-textfield__label'></label></div>";
-                    break;
-                case "angular-material":
-                    this.dialogs.buttons.ok = "<button class='ok md-primary md-button' tabindex='1'>{{ok}}</button>";
-                    this.dialogs.buttons.cancel = "<button class='cancel md-button' tabindex='2'>{{cancel}}</button>";
-                    this.dialogs.input = "<div layout='column'><md-input-container md-no-float><input type='text'></md-input-container></div>";
-                    break;
-                case "default":
-                default:
-                    this.dialogs.buttons.ok = this.defaultDialogs.buttons.ok;
-                    this.dialogs.buttons.cancel = this.defaultDialogs.buttons.cancel;
-                    this.dialogs.input = this.defaultDialogs.input;
-                    break;
+                switch (themeStr.toLowerCase()) {
+                    case "bootstrap":
+                        this.dialogs.buttons.ok = "<button class='ok btn btn-primary' tabindex='1'>{{ok}}</button>";
+                        this.dialogs.buttons.cancel = "<button class='cancel btn btn-default' tabindex='2'>{{cancel}}</button>";
+                        this.dialogs.input = "<input type='text' class='form-control'>";
+                        break;
+                    case "purecss":
+                        this.dialogs.buttons.ok = "<button class='ok pure-button' tabindex='1'>{{ok}}</button>";
+                        this.dialogs.buttons.cancel = "<button class='cancel pure-button' tabindex='2'>{{cancel}}</button>";
+                        break;
+                    case "mdl":
+                    case "material-design-light":
+                        this.dialogs.buttons.ok = "<button class='ok mdl-button mdl-js-button mdl-js-ripple-effect'  tabindex='1'>{{ok}}</button>";
+                        this.dialogs.buttons.cancel = "<button class='cancel mdl-button mdl-js-button mdl-js-ripple-effect' tabindex='2'>{{cancel}}</button>";
+                        this.dialogs.input = "<div class='mdl-textfield mdl-js-textfield'><input class='mdl-textfield__input'><label class='md-textfield__label'></label></div>";
+                        break;
+                    case "angular-material":
+                        this.dialogs.buttons.ok = "<button class='ok md-primary md-button' tabindex='1'>{{ok}}</button>";
+                        this.dialogs.buttons.cancel = "<button class='cancel md-button' tabindex='2'>{{cancel}}</button>";
+                        this.dialogs.input = "<div layout='column'><md-input-container md-no-float><input type='text'></md-input-container></div>";
+                        break;
+                    case "default":
+                    default:
+                        this.dialogs.buttons.ok = this.defaultDialogs.buttons.ok;
+                        this.dialogs.buttons.cancel = this.defaultDialogs.buttons.cancel;
+                        this.dialogs.input = this.defaultDialogs.input;
+                        break;
                 }
             },
 
@@ -409,6 +428,7 @@
                 this.setCloseLogOnClick(this.closeLogOnClickDefault);
                 this.setLogPosition("bottom left");
                 this.logTemplateMethod = null;
+                this.setInvertButtons(false);
             },
 
             injectCSS: function() {
@@ -492,7 +512,7 @@
                 return this;
             },
             closeLogOnClick: function(bool) {
-                _alertify.setCloseLogOnClick(!! bool);
+                _alertify.setCloseLogOnClick(!!bool);
                 return this;
             },
             logPosition: function(str) {
@@ -507,12 +527,20 @@
                 _alertify.setupLogContainer().innerHTML = "";
                 return this;
             },
+            invertButtons: function(bool) {
+                _alertify.setInvertButtons(bool);
+                return this;
+            },
+            dialogClass: function(str) {
+                _alertify.setDialogClass(str);
+                return this;
+            },
             version: _alertify.version
         };
     }
 
     // AMD, window, and NPM support
-    if ("undefined" !== typeof module && !! module && !! module.exports) {
+    if ("undefined" !== typeof module && !!module && !!module.exports) {
         // Preserve backwards compatibility
         module.exports = function() {
             return new Alertify();
