@@ -5,7 +5,7 @@
     var TRANSITION_FALLBACK_DURATION = 500;
     var hideElement = function(el) {
 
-        if (!el) {
+        if (! el) {
             return;
         }
 
@@ -100,9 +100,9 @@
                 }
 
                 html = (html + this.dialogs.buttons.holder + "</div>" + "</div>")
-                    .replace("{{buttons}}", btnTxt)
-                    .replace("{{ok}}", this.okLabel)
-                    .replace("{{cancel}}", this.cancelLabel);
+                  .replace("{{buttons}}", btnTxt)
+                  .replace("{{ok}}", this.okLabel)
+                  .replace("{{cancel}}", this.cancelLabel);
 
                 return html;
 
@@ -119,7 +119,7 @@
             },
 
             setCloseLogOnClick: function(bool) {
-                this.closeLogOnClick = !!bool;
+                this.closeLogOnClick = !! bool;
             },
 
             /**
@@ -142,7 +142,7 @@
 
                 if (wait < 0) {
                     hideElement(elem);
-                } else if (wait > 0) {
+                } else if(wait > 0) {
                     setTimeout(function() {
                         hideElement(elem);
                     }, wait);
@@ -201,7 +201,7 @@
 
                 var elLog = document.querySelector(".alertify-logs");
                 var className = this.logContainerClass;
-                if (!elLog) {
+                if (! elLog) {
                     elLog = document.createElement("div");
                     elLog.className = className;
                     this.parent.appendChild(elLog);
@@ -287,7 +287,7 @@
                 function setupHandlers(resolve) {
                     if ("function" !== typeof resolve) {
                         // promises are not available so resolve is a no-op
-                        resolve = function() {};
+                        resolve = function () {};
                     }
 
                     if (btnOK) {
@@ -352,7 +352,7 @@
                 this.parent.appendChild(el);
                 setTimeout(function() {
                     el.classList.remove("hide");
-                    if (input && item.type && item.type === "prompt") {
+                    if(input && item.type && item.type === "prompt") {
                         input.select();
                         input.focus();
                     } else {
@@ -386,33 +386,33 @@
             },
 
             theme: function(themeStr) {
-                switch (themeStr.toLowerCase()) {
-                    case "bootstrap":
-                        this.dialogs.buttons.ok = "<button class='ok btn btn-primary' tabindex='1'>{{ok}}</button>";
-                        this.dialogs.buttons.cancel = "<button class='cancel btn btn-default' tabindex='2'>{{cancel}}</button>";
-                        this.dialogs.input = "<input type='text' class='form-control'>";
-                        break;
-                    case "purecss":
-                        this.dialogs.buttons.ok = "<button class='ok pure-button' tabindex='1'>{{ok}}</button>";
-                        this.dialogs.buttons.cancel = "<button class='cancel pure-button' tabindex='2'>{{cancel}}</button>";
-                        break;
-                    case "mdl":
-                    case "material-design-light":
-                        this.dialogs.buttons.ok = "<button class='ok mdl-button mdl-js-button mdl-js-ripple-effect'  tabindex='1'>{{ok}}</button>";
-                        this.dialogs.buttons.cancel = "<button class='cancel mdl-button mdl-js-button mdl-js-ripple-effect' tabindex='2'>{{cancel}}</button>";
-                        this.dialogs.input = "<div class='mdl-textfield mdl-js-textfield'><input class='mdl-textfield__input'><label class='md-textfield__label'></label></div>";
-                        break;
-                    case "angular-material":
-                        this.dialogs.buttons.ok = "<button class='ok md-primary md-button' tabindex='1'>{{ok}}</button>";
-                        this.dialogs.buttons.cancel = "<button class='cancel md-button' tabindex='2'>{{cancel}}</button>";
-                        this.dialogs.input = "<div layout='column'><md-input-container md-no-float><input type='text'></md-input-container></div>";
-                        break;
-                    case "default":
-                    default:
-                        this.dialogs.buttons.ok = this.defaultDialogs.buttons.ok;
-                        this.dialogs.buttons.cancel = this.defaultDialogs.buttons.cancel;
-                        this.dialogs.input = this.defaultDialogs.input;
-                        break;
+                switch(themeStr.toLowerCase()) {
+                case "bootstrap":
+                    this.dialogs.buttons.ok = "<button class='ok btn btn-primary' tabindex='1'>{{ok}}</button>";
+                    this.dialogs.buttons.cancel = "<button class='cancel btn btn-default' tabindex='2'>{{cancel}}</button>";
+                    this.dialogs.input = "<input type='text' class='form-control'>";
+                    break;
+                case "purecss":
+                    this.dialogs.buttons.ok = "<button class='ok pure-button' tabindex='1'>{{ok}}</button>";
+                    this.dialogs.buttons.cancel = "<button class='cancel pure-button' tabindex='2'>{{cancel}}</button>";
+                    break;
+                case "mdl":
+                case "material-design-light":
+                    this.dialogs.buttons.ok = "<button class='ok mdl-button mdl-js-button mdl-js-ripple-effect'  tabindex='1'>{{ok}}</button>";
+                    this.dialogs.buttons.cancel = "<button class='cancel mdl-button mdl-js-button mdl-js-ripple-effect' tabindex='2'>{{cancel}}</button>";
+                    this.dialogs.input = "<div class='mdl-textfield mdl-js-textfield'><input class='mdl-textfield__input'><label class='md-textfield__label'></label></div>";
+                    break;
+                case "angular-material":
+                    this.dialogs.buttons.ok = "<button class='ok md-primary md-button' tabindex='1'>{{ok}}</button>";
+                    this.dialogs.buttons.cancel = "<button class='cancel md-button' tabindex='2'>{{cancel}}</button>";
+                    this.dialogs.input = "<div layout='column'><md-input-container md-no-float><input type='text'></md-input-container></div>";
+                    break;
+                case "default":
+                default:
+                    this.dialogs.buttons.ok = this.defaultDialogs.buttons.ok;
+                    this.dialogs.buttons.cancel = this.defaultDialogs.buttons.cancel;
+                    this.dialogs.input = this.defaultDialogs.input;
+                    break;
                 }
             },
 
@@ -429,6 +429,7 @@
                 this.setLogPosition("bottom left");
                 this.logTemplateMethod = null;
                 this.setInvertButtons(false);
+		this.setDialogClass("");
             },
 
             injectCSS: function() {
@@ -512,7 +513,7 @@
                 return this;
             },
             closeLogOnClick: function(bool) {
-                _alertify.setCloseLogOnClick(!!bool);
+                _alertify.setCloseLogOnClick(!! bool);
                 return this;
             },
             logPosition: function(str) {
@@ -540,7 +541,7 @@
     }
 
     // AMD, window, and NPM support
-    if ("undefined" !== typeof module && !!module && !!module.exports) {
+    if ("undefined" !== typeof module && !! module && !! module.exports) {
         // Preserve backwards compatibility
         module.exports = function() {
             return new Alertify();
