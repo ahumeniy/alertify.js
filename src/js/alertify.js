@@ -48,6 +48,8 @@
             defaultDelay: 5000,
             logContainerClass: "alertify-logs",
             logContainerDefaultClass: "alertify-logs",
+            invertButtons: false,
+            dialogClass: "",
             dialogs: {
                 buttons: {
                     holder: "<nav>{{buttons}}</nav>",
@@ -80,10 +82,17 @@
             build: function(item) {
 
                 var btnTxt = this.dialogs.buttons.ok;
-                var html = "<div class='dialog'>" + "<div>" + this.dialogs.message.replace("{{message}}", item.message);
 
-                if(item.type === "confirm" || item.type === "prompt") {
-                    btnTxt = this.dialogs.buttons.cancel + this.dialogs.buttons.ok;
+                var cssClass = "dialog";
+                if (this.dialogClass != "") cssClass = cssClass + " " + this.dialogClass;
+
+                var html = "<div class='" + cssClass + "'>" + "<div>" + this.dialogs.message.replace("{{message}}", item.message);
+
+                if (item.type === "confirm" || item.type === "prompt") {
+                    if (!this.invertButtons)
+                        btnTxt = this.dialogs.buttons.cancel + this.dialogs.buttons.ok;
+                    else
+                        btnTxt = this.dialogs.buttons.ok + this.dialogs.buttons.cancel;
                 }
 
                 if (item.type === "prompt") {
@@ -97,6 +106,16 @@
 
                 return html;
 
+            },
+
+            setInvertButtons: function(val) {
+                this.invertButtons = val;
+                return this;
+            },
+
+            setDialogClass: function(val) {
+                this.dialogClass = val;
+                return this;
             },
 
             setCloseLogOnClick: function(bool) {
@@ -409,6 +428,8 @@
                 this.setCloseLogOnClick(this.closeLogOnClickDefault);
                 this.setLogPosition("bottom left");
                 this.logTemplateMethod = null;
+                this.setInvertButtons(false);
+		this.setDialogClass("");
             },
 
             injectCSS: function() {
@@ -505,6 +526,14 @@
             },
             clearLogs: function() {
                 _alertify.setupLogContainer().innerHTML = "";
+                return this;
+            },
+            invertButtons: function(bool) {
+                _alertify.setInvertButtons(bool);
+                return this;
+            },
+            dialogClass: function(str) {
+                _alertify.setDialogClass(str);
                 return this;
             },
             version: _alertify.version
